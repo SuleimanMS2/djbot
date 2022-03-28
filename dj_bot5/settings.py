@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-=)_00^wq8xqrn_7zcqf3(^f3jyz%vv9xsq3t^=7rl-+n83ge8-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['suleiman.ga']
 
 
 # Application definition

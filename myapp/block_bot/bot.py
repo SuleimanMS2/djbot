@@ -37,7 +37,7 @@ def bowlash(update, context):
     update.message.reply_text(text='Bizda mavjud testlar',
                               reply_markup=ReplyKeyboardMarkup(keyboard, one_time_keyboard=True, resize_keyboard=True))
 
-    list[userid] = {}
+    # list[userid] = {}
 
 
 def begin(update, context):
@@ -71,7 +71,7 @@ def middle_handler(update, context):
     course = update.message.text
     if course == 'Bowlash' or course == 'Orqaga':
         if course == 'Bowlash':
-            return countdown(update, context)
+            return test_begin(update, context)
         elif course == 'Orqaga':
             return bowlash(update, context)
     else:
@@ -184,7 +184,7 @@ def test_query(update, context):
                 parse_mode='Markdown'
             )
     elif data == 'stop':
-        stop_time[userid] = 'stop'
+        help(update, context)
     elif data == 'Ha':
         error(update, context)
     else:
@@ -221,21 +221,22 @@ def test_query(update, context):
 
 
 def countdown(update, context):
-    userid = update.effective_user.id
-    time_sec = 20
-    b = update.message.reply_text(text="00:21")
-    test_begin(update, context)
-    while update:
-        mins, secs = divmod(time_sec, 60)
-        timeformat = '{:02d}:{:02d}'.format(mins, secs)
-        context.bot.edit_message_text(text=timeformat, message_id=b.message_id,
-                                      chat_id=update.message.chat_id)
-        time.sleep(1)
-        time_sec -= 1
-        if time_sec == 0 or len(list[userid]) == 5 or stop_time[userid] == 'stop':
-            context.bot.delete_message(chat_id=b.chat_id, message_id=b.message_id)
-            context.bot.delete_message(chat_id=b.chat_id, message_id=b.message_id + 1)
-            return help(update, context)
+    # userid = update.effective_user.id
+    # time_sec = 20
+    # b = update.message.reply_text(text="00:21")
+    # test_begin(update, context)
+    # while update:
+    #     mins, secs = divmod(time_sec, 60)
+    #     timeformat = '{:02d}:{:02d}'.format(mins, secs)
+    #     context.bot.edit_message_text(text=timeformat, message_id=b.message_id,
+    #                                   chat_id=update.message.chat_id)
+    #     time.sleep(1)
+    #     time_sec -= 1
+    #     if time_sec == 0 or len(list[userid]) == 5 or stop_time[userid] == 'stop':
+    #         context.bot.delete_message(chat_id=b.chat_id, message_id=b.message_id)
+    #         context.bot.delete_message(chat_id=b.chat_id, message_id=b.message_id + 1)
+    #         return help(update, context)
+    pass
 
 
 def help(update, context):
@@ -250,14 +251,13 @@ def help(update, context):
                    InlineKeyboardButton(text='❌ Xatolarni ko\'rish ❌', callback_data='Ha')
                ],
     try:
-        update.message.reply_text(text=f'Test Yakunlandi\n\nTo`g`ri javoblar: {summa} ta\n'
-                                       f'Noto`g\'ri javoblar: {len(list[userid]) - summa} ta\n'
-                                       f'Javobsiz testlar: {len(question_id[userid])} ta\n\n'
-                                       f'/bowlash - Boshqa testlarni ishlash uchun',
-                                  reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard))
+        update.callback_query.message.edit_text(text=f'Test Yakunlandi\n\nTo`g`ri javoblar: {summa} ta\n'
+                                                     f'Noto`g\'ri javoblar: {len(list[userid]) - summa} ta\n'
+                                                     f'Javobsiz testlar: {len(question_id[userid])} ta\n\n'
+                                                     f'/bowlash - Boshqa testlarni ishlash uchun',
+                                                reply_markup=InlineKeyboardMarkup(inline_keyboard=keyboard))
     except AttributeError:
         pass
-    stop_time[userid] = {}
 
 
 def error(update, context):
